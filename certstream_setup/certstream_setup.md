@@ -92,4 +92,4 @@ Run certstream locally:
 certstream --url ws://127.0.0.1:8080 --json | jq -r '.data.leaf_cert.all_domains[]'
 ```
 
-![Alt Text](unning.gif)
+![Alt Text](running.gif?raw=true)
