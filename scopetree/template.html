@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>URL Tree Graph</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <style>
+        .node circle {
+            fill: #fff;
+            stroke: steelblue;
+            stroke-width: 3px;
+        }
+
+        .node text {
+            font: 12px sans-serif;
+        }
+
+        .link {
+            fill: none;
+            stroke: #ccc;
+            stroke-width: 2px;
+        }
+    </style>
+</head>
+<body>
+    <svg width="$$$WIDTH$$$" height="$$$HEIGHT$$$"></svg>
+    <script>
+        $$$DATA$$$
+
+        // Function to convert the directory tree to a D3-compatible format
+        function convertToD3Format(tree) {
+            const result = { name: "root", children: [] };
+            for (const key in tree) {
+                const children = convertToD3Format(tree[key]);
+                result.children.push({ name: key, children: children.children });
+            }
+            return result;
+        }
+
+        // Create the D3 tree graph
+        const data = convertToD3Format(directoryTree);
+        const width = $$$WIDTH$$$;
+        const height = $$$HEIGHT$$$;
+
+        const svg = d3.select("svg")
+            .attr("width", width)
+            .attr("height", height);
+
+        const treeLayout = d3.tree().size([height, width - 160]);
+        const root = d3.hierarchy(data);
+        treeLayout(root);
+
+        // Links
+        svg.selectAll(".link")
+            .data(root.links())
+            .enter()
+            .append("path")
+            .attr("class", "link")
+            .attr("d", d3.linkVertical()
+                .x(d => d.y)
+                .y(d => d.x));
+
+        // Nodes
+        const node = svg.selectAll(".node")
+            .data(root.descendants())
+            .enter()
+            .append("g")
+            .attr("class", "node")
+            .attr("transform", d => `translate(${d.y},${d.x})`);
+
+        node.append("circle")
+            .attr("r", 5);
+
+        node.append("text")
+            .attr("dy", 3)
+            .attr("x", d => d.children ? -8 : 8)
+            .style("text-anchor", d => d.children ? "end" : "start")
+            .text(d => d.data.name);
+    </script>
+</body>
+</html>
