@@ -1,6 +1,6 @@
 # scopetree
 
-Script to generate a vertical tree structure of scope exported from burp suite. Helps to visualize the scope.
+Script to generate a vertical tree structure of scope exported from BurpSuite. Helps to visualize the scope.
 
 ## Usage
 

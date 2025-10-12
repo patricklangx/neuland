@@ -28,7 +28,6 @@
     <script>
         $$$DATA$$$
 
-        // Function to convert the directory tree to a D3-compatible format
         function convertToD3Format(tree) {
             const result = { name: "root", children: [] };
             for (const key in tree) {
@@ -38,7 +37,6 @@
             return result;
         }
 
-        // Create the D3 tree graph
         const data = convertToD3Format(directoryTree);
         const width = $$$WIDTH$$$;
         const height = $$$HEIGHT$$$;
@@ -51,7 +49,6 @@
         const root = d3.hierarchy(data);
         treeLayout(root);
 
-        // Links
         svg.selectAll(".link")
             .data(root.links())
             .enter()
@@ -61,7 +58,6 @@
                 .x(d => d.y)
                 .y(d => d.x));
 
-        // Nodes
         const node = svg.selectAll(".node")
             .data(root.descendants())
             .enter()
