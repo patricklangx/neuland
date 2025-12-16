@@ -1,4 +1,6 @@
-# Setup Certstreamer Server and Client in Docker
+# Setup Local Certstreamer Server and Client
+
+## Run Certstreamer Server Go and Client in Docker
 
 ### Create Internal Docker Network
 
@@ -8,7 +10,7 @@ sudo docker network create -d bridge internal_network
 
 ### Run Certsreamer Server Go
 
-Create *certstreamer_server_go_config.yaml* config file:
+**Create *certstreamer_server_go_config.yaml* config file:**
 ```
 webserver:
   listen_addr: "0.0.0.0"
@@ -45,14 +47,14 @@ general:
   drop_old_logs: true
 ```
 
-Pull the image and run the container:
+**Pull the image and run the container:**
 ```
-docker run -d -v certstreamer_server_go_config.yaml:/app/config.yaml --network internal_network 0rickyy0/certstream-server-go
+docker run -d -v certstreamer_server_go_config.yaml:/config.yaml --network internal_network 0rickyy0/certstream-server-go
 ```
 
 ### Run Certstreamer Client
 
-Create *DOCKERFILE* file:
+**Create *DOCKERFILE* file:**
 ```
 FROM python:3.9-slim
 
@@ -67,27 +69,27 @@ COPY certstreamer.sh .
 RUN ./certstreamer.sh
 ```
 
-Create *certstreamer.sh* file:
+**Create *certstreamer.sh* file:**
 ```
 #!/bin/bash
 
 certstream --url ws://[YOUR INTERNAL CERTSTREAMER SERVER IP]:8080 --json | jq -r '.data.leaf_cert.all_domains[]'
 ```
 
-Build image and run in container:
+**Build image and run in container:**
 ```
 sudo docker build -t certstreamer . && sudo docker run --network internal_network certstreamer
 ```
 
-## Alternatively
+## Alternative: Run only Certstreamer Server Go in Docker
 
-Run certstreamer server go on Docker with exposing port:
+**Run certstreamer server go on Docker with exposing port:**
 
 ```
-docker run -d -v certstreamer_server_go_config.yaml:/app/config.yaml -p 8080:8080 0rickyy0/certstream-server-go
+docker run -d -v certstreamer_server_go_config.yaml:/config.yaml -p 8080:8080 0rickyy0/certstream-server-go
 ```
 
-Run certstream locally:
+**Run certstreamer client:**
 ```
 certstream --url ws://127.0.0.1:8080 --json | jq -r '.data.leaf_cert.all_domains[]'
 ```

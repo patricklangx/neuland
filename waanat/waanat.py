@@ -8,7 +8,7 @@ import platform
 # Windows support
 if platform.system() == 'Windows':
     kernel32 = ctypes.windll.kernel32
-    kernel32.SetConsoleMode(kernel32.GetStdHandle(-11), 7) # Windows console mode for input handle
+    kernel32.SetConsoleMode(kernel32.GetStdHandle(-11), 7) 
 
 # Foreground colors
 def reset(text: Any) -> str:
@@ -145,3 +145,20 @@ def newline(text: Any, n: int = 1) -> str:
 
 def c_return(text: Any) -> str:
     return f"\r{text}"
+
+# Actions
+def info(text: Any) -> str:
+    return f"\033[37m[i] {text}\033[0m"
+
+def negative(text: Any) -> str:
+    return f"\033[31m[-] {text}\033[0m"
+
+def positive(text: Any) -> str:
+    return f"\033[32m[+] {text}\033[0m"
+
+def running(text: Any) -> str:
+    return f"\033[33m[~] {text}\033[0m"
+
+def exception(text: Any) -> str:
+    return f"\033[37;41m[!!!] {text}\033[0m"
+
