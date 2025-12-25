@@ -28,8 +28,6 @@ Research paper [Your Cache Has Fallen: Cache-Poisoned Denial-of-Service Attack](
 
 ### Request header size limits of HTTP implementations
 
-Here is the transformed table in Markdown format:
-
 |  | HTTP implementation | Documented limit | Tested limit | Limit exceed error code |
 | --- | --- | --- | --- | --- |
 | CDN | Akamai | undefined | 32,760 bytes | No Response |
